@@ -1,5 +1,6 @@
 // weather api e0f0a8b3330dc42aff1f0ae66cbbf91d
 // time zone api AP6ZQOHBDQUI
+// news api 654fa60020c846d5ae35f071c45b484c
 /*var monthDay = {
 	dates = [],
 	month = [];
@@ -8,10 +9,13 @@ $(document).ready(function() {
 function please() {
 var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 var days2 = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-var dayList = 
+var latitude;
+var longitude;
+var lat;
+var lon;
 navigator.geolocation.getCurrentPosition(function(location) {
-	var lat = location.coords.latitude;
-	var lon = location.coords.longitude;
+	lat = location.coords.latitude;
+	lon = location.coords.longitude;
 	var latitude = Math.floor((lat*10))/10;
 	var longitude = Math.round(lon * 10)/10;
 	console.log(latitude);
@@ -19,6 +23,7 @@ navigator.geolocation.getCurrentPosition(function(location) {
 	weatherLocation(latitude, lon);
 	hourLocation(latitude, lon);
 });
+
 
 var zipCode = 85224;
 $('.submit').click(function() {
@@ -125,6 +130,13 @@ function currentweatherLoop(data) {
 	//City and Country
 	var city 	= data.name;
 	var country = data.sys.country;
+	
+	//Latitude and Longitude
+	var lat = data.coord.lat;
+	var lon = data.coord.lon;
+	console.log(lat)
+	console.log(lon)
+
 
 	//Weather
 	var main 			= data.weather[0].main;
@@ -182,15 +194,12 @@ function currentweatherLoop(data) {
 	else if(main == 'Clouds') {
 		weatherCondition = Clouds;
 	} 
-	else if(main == 'Rain') {
+	else if(main == 'Rain' || main == 'Thunderstorm' || main == 'Drizzle') {
 		weatherCondition = Rainy;
 		setInterval(generateRain, 700);
 	}
-	else if(main == 'Drizzle') {
-		weatherCondition = Rainy;
-		setInterval(generateRain, 700);
-	}
-
+	
+	console.log(main)
 	var sunMobile 	= '<span class="sun-mobile"></span>';
 	var moonMobile 	= '<img class="moon-mobile" src="moon.png">';
 	if(timePost > 7 && timePost < 18) {
@@ -236,13 +245,13 @@ function currentweatherLoop(data) {
 			$('.rain-container').append(rainDrop)
 		
 	}
-
-
+	
 	//Append sun rays for sun
 	for(var i = 0; i < 12; i++) {
 		degrees += 30;
 		sunCircle = $('.sun-center').append('<div class="sun-rays" style="transform: rotate('+degrees+'deg);"></div>');
 	}
+	
 }
 var array = [];
 var counts = {};
@@ -376,6 +385,10 @@ function forLoop2(data) {
 		var main 			= dayList.weather[0].main;
 		var description 	= dayList.weather[0].description;
 		
+		//Lon & Lat
+		var lat = data.city.coord.lat;
+		var lon = data.city.coord.lon;
+		
 		//Wind Speed
 			var windSpeed = data.list[i].wind.speed;
 			
@@ -408,6 +421,7 @@ function forLoop2(data) {
 			timeSplit3 = '12' + ':00' + 'AM'
 		}
 	}
+	
 }
 
 var allDays = [];
@@ -498,6 +512,7 @@ function currentWeather(zip) {
 		async: true,
 		success: function apiCall(data){
 			currentweatherLoop(data)
+			
 		}
 	});
 }
@@ -585,27 +600,81 @@ function getData(zip) {
 
 please();
 
-/*
-(function work() {
+
+function work(lat, lng){  
 	$.ajax({
-		url: 'http://api.timezonedb.com/v2/get-time-zone?key=AP6ZQOHBDQUI&format=json&by=zone&zone=America/Phoenix', 
-		async: false,
+		url: 'http://api.timezonedb.com/v2/get-time-zone?key=AP6ZQOHBDQUI&format=json&by=position&position=lat&lat='+lat+'&lng&lng='+lng+'', 
+		async: true,
 		success: function apiCall(data){
 			var time = data.formatted;
 			var test = time.split(" ");
 			var time2 = test[1];
 			var time3 = time2.slice(0, 5);
+
 			$('.time').html(time3);	
-			setTimeout(work, 5000);
+			setTimeout(work(lat, lon), 1500);
+
 		}
 	});
-})()
+}
+
+function newsLoop(data) {
+	for(var i = 0; i < data.articles.length; i++) {
+		var allNews 		= data.articles[i];
+		var newsSource 		= allNews.source.name;
+		var author			= allNews.author;
+		var authorSplit		= author.split(' ')[0] + ' ' + author.split(' ')[1];
+		var newsTitle 		= allNews.title;
+		var newsDescription = allNews.description;
+		var newsLink 		= allNews.url;
+		var newsImage 		= allNews.urlToImage;
+		var publishDate		= allNews.publishedAt;
+		
+		//News Box
+		$('.top-container').append('<div class="news-box")>\
+								<div class="box-top" style="background-image: url('+newsImage+');">33</div>\
+								<div class="box-bottom">\
+									<div class="title"><h2>'+newsTitle+'</h2></div>\
+									<div class="box-bottom2">\
+										<div class="author">by ' +authorSplit+'</div>\
+										<div class="publish-date">'+publishDate+'</div>\
+									</div>\
+								</div>\
+						</div>');
+	}
+}
+
+function news() {
+	$.get("https://newsapi.org/v2/everything?domains=space.com&apiKey=654fa60020c846d5ae35f071c45b484c").done(function (data) {
+     	newsLoop(data)
+	});
+}
+news()
+
+
 /*
+function work3(lat, lng) {
+	$.ajax({
+		url: 'http://api.timezonedb.com/v2/get-time-zone?key=AP6ZQOHBDQUI&format=json&by=position&position=lat&lat='+lat+'&lng&lng='+lng+'', 
+		async: true,
+		success: function apiCall(data){
+			var time = data.formatted;
+			
+			$('.time').html(time);	
+			console.log(time)
+				
+		}
+	});
+}
+work3(lat, lon)*/
+
 
 
 //news
 //nasa
 //sports
+//http://api.timezonedb.com/v2/get-time-zone?key=AP6ZQOHBDQUI&format=json&by=position&position=lat&lat=33.3&lng&lng=-111.9
+
 
 /*
 //If less than certain temperature
