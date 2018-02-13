@@ -1,0 +1,737 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	background: #333;
+	color: white;
+	font-family: arial;
+ 	height: 100%;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.nav {
+    float: left;
+    width: 100px;
+    height: 100%;
+}
+
+.nav-top {
+	height: 330px;
+	background: #222;
+}
+
+.nav-bottom {
+	height: calc(100% - 330px);
+}
+
+.nav-bottom::-webkit-scrollbar-track {
+	border-radius: 10px;
+	background-color: #333;
+}
+
+.nav-bottom::-webkit-scrollbar {
+	width: 7px;
+}
+
+.nav-bottom::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #555;
+}
+
+.day-box {
+	transition: all .1s ease-in-out;
+	position: relative;
+	height: 16.67777%;
+	background: #222;
+}
+
+.active-day {
+	background: #2c97c2;
+}
+
+.day-box:hover {
+	background: #444;
+}
+
+.day-box:hover h3 {
+ 	transform-origin: 180px 125px;
+ 	transform: scale(1.1);
+}
+
+.day-box h3 {
+	transition: all .1s ease-in-out;
+	transform: translate(-50%, -50%);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: 0;
+	padding: 0;
+}
+
+
+.container {
+	height: 100%;
+	float: left;
+    width: calc(100% - 100px);
+    overflow: hidden;
+}
+
+.top {
+	height: 330px;
+	position: relative;
+	background-repeat:no-repeat;
+	background-size: 100% auto;
+	background-position:center;
+}
+
+.top-bottom {
+	height: 100px;
+	clear: both;
+}
+
+.bottom {
+	height: calc(100% - 330px);
+	
+}
+
+.bottom-left {
+	transition: background 5s;
+	width: 30%;
+	height: 100%;
+	float: left;
+	position: relative;
+	background: linear-gradient(#d9b666, #f36315);
+	overflow: hidden;
+}
+
+.search-container {
+	position: absolute; 
+	width: 100%
+}
+
+.submit-button {
+	transition: all .2s ease-in-out;
+	float: left;
+	width: 50px;
+	height: 50px;
+	background-color: rgba(0, 0, 0, .3);
+}
+
+.submit-button:hover {
+	background-color: rgba(0, 0, 0, .5);
+}
+
+.submit-button:hover .submit {
+	transform: scale(1.2);
+}
+
+.submit {
+	transition: all .1s ease-in-out;
+	position: relative;
+	top: 8px;
+	left: 8px;
+	height: 35px;
+	width: 35px;
+}
+
+.glass {
+	position: relative;
+	border-radius: 50px/50px;
+	border: solid 5px white;
+	width: 18px;
+	height: 18px;   
+}
+
+.glass:before {
+	content: '';
+	position: absolute;
+	width: 5px;
+	height: 15px;
+	background: white;
+	right: -7px;
+	bottom: -12px;
+	transform: rotate(-45deg);
+}
+
+.input {
+	transition: all .2s ease-in-out;
+	background-color: rgba(0, 0, 0, .1);
+	width: calc(100% - 70px);    
+	padding: 10px;
+	font-size: 24px;
+	float: left;
+	border: none;
+}
+
+input[type=text]:focus {
+    background-color: rgba(0, 0, 0, .3);	
+    color: white;
+}
+
+::placeholder {
+    color: white;
+    opacity: .6; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: white;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+   color: white;
+}
+
+.night-time {
+	transition: background 5s;
+	background: linear-gradient(#176496, #46a0db) !important;
+}
+
+.sun-mobile {
+	height: 90px;
+	width: 90px;
+	border-radius: 50%;
+	background: white;
+	position: absolute;
+	top: 20%;
+	left: 4%;
+	box-shadow: 0px 0px 45px 14px rgb(241, 245, 145);
+	animation-name: sun-mobile;
+	animation-duration: .7s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate-reverse;
+}
+
+@keyframes sun-mobile {
+   	from {box-shadow: 0px 0px 45px 14px rgb(241, 245, 145)}
+    to {box-shadow: 0px 0px 45px 24px rgb(241, 245, 145)}
+}
+
+.moon-mobile {
+	height: 90px;
+	width: 90px;
+	filter:	drop-shadow(0px 0px 11px #fff);
+	position: absolute;
+	top: 20%;
+	left: 4%;
+}
+
+
+.star {
+	height: 3px;
+	width: 3px;
+	background: white;
+	box-shadow: 0px 0px 25px 3px rgba(255,255,255,1);
+	position: absolute;
+	border-radius: 40%;
+	animation-name: star;
+	animation-duration: .5s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate-reverse;
+}
+
+.circle:nth-child(odd) {
+	animation-delay: 1.7s;
+}
+
+@keyframes star {
+   	from {
+   		background: white; 
+   		height: 3px;
+   		box-shadow: 0px 0px 20px 2px rgba(255,255,255,1);
+   	}
+    to {
+    	background: #b4e1ff; 
+    	height: 3px;
+    	box-shadow: 0px 0px 25px px rgba(255,255,255,1);
+   	}
+}
+
+.shooting-star {
+	height: 1px;
+	position: absolute;
+	width: 50px;
+	background: white;
+	opacity: .3;
+}
+
+.shooing-star:after {
+	position:absolute;
+	display:block;
+	content:"";
+	width:100px;
+	right:1px;
+	top:0px;
+	height:1px;
+	background: linear-gradient(to right, rgba(0,0,0,0) 0%,rgba(255,255,255,0.4) 100%); 
+
+}
+
+.bottom-left-modal {
+	z-index: 2;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-image: url(mobile-background.png);
+	background-repeat:no-repeat;
+	background-size: 100% auto;
+	background-position:center;
+}
+
+.weather-container {
+	transform: translate(-50%, -50%);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 100%;
+	text-align: center;
+	font-size: 2em;
+}
+
+.weather-insert {
+	overflow: hidden;
+	height: 80px;
+	z-index: 3;
+}
+
+.weather-insert img:first-child {
+	width: 80px;
+	z-index: 4;
+	position: relative;
+}
+
+.weather-container .child {
+	margin-bottom: 10px;
+}
+
+.tempConvert, .maxDegrees, 
+.minDegrees, .humidity, .mainly {
+	overflow: auto;
+}
+
+.tempConvert {
+	margin-bottom: 30px !important;
+	font-size: 1.4em;
+}
+
+.child h5 {
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	color: #c3446d;
+	font-size: .7em;
+	
+}
+
+.child h5:nth-child(1) {
+	width: 50%;
+	margin-right: 10%;
+	float: left;
+	text-align: right;
+}
+
+.child h5:nth-child(2) {
+	color: white;
+	width: 40%;
+	float: left;
+	text-align: left;
+	font-weight: normal;
+}
+
+.city-country {
+	font-size: 1.3em;
+}
+
+.day-month, .days {
+	color:  white !important;
+	font-size: .9em !important;
+}
+
+.weather-icon {
+	height: 80px;
+	width: 80px;
+}
+
+.bottom-right {
+	width: 70%;
+	height: 100%;
+	float: left;
+	position: relative;
+	background: #ededed;
+}
+
+.bottom-right-top {
+	height: 70px;
+	background: #222;
+}
+
+.bottom-right-top-left, 
+.bottom-right-top-right {
+	width: 50%;
+	float: left;
+	position: relative;
+}
+
+.bottom-right-top-left h2, 
+.bottom-right-top-right h2 {
+	position: relative;
+	top: 10px;
+	left: 10px;
+	margin: 0;
+	padding: 0;
+
+}
+
+.bottom-right-top-left h2:first-letter, 
+.bottom-right-top-right h2:first-letter {
+	text-transform: uppercase;
+}
+
+.bottom-right-modal {
+	height: calc(100% - 70px);
+    width: 100%;
+    clear: both;
+}
+
+.temp-container {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.temp-hour {
+	text-align: center;
+    float: left;
+    height: 100%;
+}
+
+.temp-hour h2 {
+	margin: 0;
+	padding: 0;
+}
+
+.temp-hour .temp-3hour {
+	top: -20px;
+}
+
+.temp-hour .span-container {
+	position: relative;
+	background: #222;
+	display: block;
+	height: 100%;
+}
+
+.temp-hour .span-top {
+	height: 15%;
+	background: #222;
+	width: 100%;
+	position: relative;
+	display: block;
+}
+
+.span-top .time-3hour {
+	transform: translate(-50%, -50%);
+	position: absolute;
+	top: 50%;
+	left: 50%
+}
+
+.temp-hour .span-bottom {
+	height: 85%;
+	background: #fff;
+	width: 100%;
+	position: relative;
+	display: block;
+
+}
+
+.temp-height {
+	width: 86%;
+	position: absolute;
+	bottom: 0;
+	left: 7%;
+}
+
+.temp-icon {
+	position: relative;
+	top: 20px;
+	z-index: 1;
+}
+
+.temp-icon img {
+	height: auto;
+	width: 100%;
+	max-width: 70px;
+}
+
+.temp-icon .temp-3hour {
+	margin-bottom: 5px;
+	color: #555;
+}
+
+.temp-icon .weatherIcon {
+	height: 70px;
+	width: 80px;
+}
+
+
+/**** Sun ****/
+.sun-container {
+	position: relative;
+	margin: 0 auto 40px;
+	margin-top: 30px;
+	margin-bottom: 40px !important;
+	display: inline-block;
+}
+
+.sun-center {
+    transition: all .2s ease-in-out;
+	position: relative;
+    z-index: 101;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top: 3px solid #fff;
+    border-left: 3px solid #fff;
+    border-bottom: 3px solid #fff;
+    border-right: 3px solid #fff;
+    width: 20px;
+    height: 20px;
+}
+
+.sun-rays {
+	position: absolute;
+	top: -20px;
+	left: 43%;
+	height: 11px;
+	width: 3px;
+	border-radius: 10px;
+	background: white;
+	transform: translate(-50%, -50%);
+	transform: rotate(720deg);
+	transform-origin: 1.5px 270%;
+	animation-name: sun-ray;
+	animation-duration: .8s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate-reverse;
+}
+
+@keyframes sun-ray {
+   	from {top: -20px; transform-origin: 1.5px 270%;}
+    to {top: -22px; transform-origin: 1.5px 295%;}
+}
+
+
+
+
+/**** Thermometer ****/
+
+.therm-container {
+	position: relative;
+	left: -18px;
+	margin: 0 auto;
+	margin-top: 40px !important;
+	margin-bottom: 40px !important;
+	display: inline-block;
+}
+
+.therm-bar {
+	position: absolute;
+	transition: all .2s ease-in-out;
+	z-index: 101;
+	border: 3px solid transparent;
+	border-top: 3px solid #fff;
+	border-left: 3px solid #fff;
+	border-right: 3px solid #fff;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+	width: 14px;
+	height: 36px;
+	bottom: -8px;
+	left: 5px;
+}
+
+.therm-circle {
+	position: absolute;
+	transition: all .2s ease-in-out;
+	z-index: 101;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-left: 3px solid #fff;
+	border-bottom: 3px solid #fff;
+	border-right: 3px solid #fff;
+	width: 24px;
+	height: 24px;
+}
+
+.inner-circle {
+	transform: translate(-50%, -50%);	
+	position: absolute;
+	top: 50%;
+	left: 47%;
+	height: 15px;
+	width: 15px;
+	background: red;
+	border-radius: 100%;
+	animation-name: therm-circle;
+	animation-duration: .7s;
+	animation-delay: 1s;
+	animation-fill-mode: forwards;
+}
+
+@keyframes therm-circle {
+   	from {background: red;}
+    to {background: blue;}
+}
+
+.inner-bar {
+	transform: translate(-50%, 0%);
+	position: absolute;
+	bottom: 50%;
+	left: 50%;
+	height: 28px;
+	width: 7px;
+	background: red;
+	border-radius: 5px;
+	animation-name: therm-bar;
+	animation-duration: .7s;
+	animation-delay: 1s;
+	animation-fill-mode: forwards;
+}
+
+@keyframes therm-bar {
+   	from {background: red; height: 28px;}
+    to {background: blue; height: 0px;}
+}
+
+/**** Rainy ****/
+.rain-container {
+	position: relative;
+	overflow: hidden;
+	display: inline;
+}
+
+.rain-drop {
+	height: 20px !important;
+	width: 20px !important;
+	position: absolute;
+	z-index: 1;
+}
+
+/**** News ****/
+.top {
+	padding-left: 1%;
+	background: #111;
+}
+
+.slider {
+	height: 100%;
+	min-width: 0;
+	white-space: nowrap;
+	padding-left: 1%
+	height: 330px;
+	position: relative;
+	background-repeat:no-repeat;
+	background-size: 100% auto;
+	background-position:center;
+}
+
+.left-arrow, .right-arrow {
+	position: absolute;
+	z-index: 5;
+}
+
+.left-arrow {
+	left: 0;
+	top: 50%;
+}
+
+.right-arrow {
+	right: 0;
+	top: 50%;
+}
+
+.news-box {
+	transition: all .2s ease-in-out;
+	background: white;
+	display: inline-block;
+	white-space: normal;
+	vertical-align: top;
+	background-repeat:no-repeat;
+	background-size: 140% auto;
+	background-position:center;
+	position: relative;
+	top: 5%;
+	height: 90%;
+	width: 19%;
+	margin-right: 1%;
+	box-shadow: 2px 2px 6px 1px rgb(26, 25, 25)
+}
+
+.active-box {
+	transform: scale(1.06);
+}
+
+.open-link {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	z-index: 1;
+}
+
+.news-box:hover {
+	transform: scale(1.06);
+}
+
+.box-top {
+	height: 60%;
+	background: #111;
+	background-repeat:no-repeat;
+	background-size: 110% auto;
+	background-position:center;
+}
+
+.box-bottom {
+	height: 40%;
+	background: white;
+	position: relative;
+}
+
+.box-padding {
+	height: 100%;
+	position: relative;
+	padding: 0 3%;
+}
+
+.box-bottom2 {
+	position: absolute;
+	left: 7%;
+	bottom: 5%;
+	width: 86%;
+}
+
+.author {
+	float: left;
+	width: 50%;
+	color: #333;
+}
+
+.publish-date {
+	float: left;
+	width: 50%;
+	color: #333;
+	text-align: right;
+}
+
+.title {
+	color: #333;
+	width: 100%;
+}
+
+.title h2 {
+	margin: 0;
+	padding: 8px 13px;
+	font-size: 1.1em;
+}

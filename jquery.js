@@ -24,12 +24,10 @@ navigator.geolocation.getCurrentPosition(function(location) {
 	hourLocation(latitude, lon);
 });
 
-
-var zipCode = 85224;
-$('.submit').click(function() {
+function buttonOn() {
 	zipCode = $('.input').val();
 	if(zipCode === '') {
-		alert('put something in here...')
+		alert('Fucking put something in here!')
 	}
 	else {
 		$('.nav-bottom').empty();
@@ -42,7 +40,23 @@ $('.submit').click(function() {
 		getData(zipCode);
 		currentWeather(zipCode);
 	}
+}
+
+var zipCode = 85224;
+$('.input').keypress(function (e) {
+	var key = e.which;
+	if(key == 13)  // the enter key code
+	{
+		buttonOn()
+	}
+});  
+
+$('.submit-button').click(function() {
+	buttonOn()
 })
+
+ 
+
 var dates = [];
 var month = [];
 var work = 85224;
@@ -564,7 +578,7 @@ function getData(zip) {
 
 			console.log(uniqueDays)
 			console.log(result)
-			forLoop(result);
+			forLoop(result, 'today');
 			$('.day-box').click(function() {
 				array = [];
 				counts = {};
@@ -631,17 +645,22 @@ function newsLoop(data) {
 		var publishDate		= allNews.publishedAt;
 		
 		//News Box
-		$('.top-container').append('<div class="news-box")>\
+		$('.slider').append('<div class="news-box")>\
+								<a target="_tab" class="open-link" href="'+newsLink+'"></a>\
 								<div class="box-top" style="background-image: url('+newsImage+');">33</div>\
 								<div class="box-bottom">\
-									<div class="title"><h2>'+newsTitle+'</h2></div>\
-									<div class="box-bottom2">\
-										<div class="author">by ' +authorSplit+'</div>\
-										<div class="publish-date">'+publishDate+'</div>\
+									<div class="box-padding">\
+										<div class="title"><h2>'+newsTitle+'</h2></div>\
+										<div class="box-bottom2">\
+											<div class="author">by ' +authorSplit+'</div>\
+											<div class="publish-date">'+publishDate+'</div>\
+										</div>\
 									</div>\
 								</div>\
-						</div>');
+							</div>');
 	}
+
+
 }
 
 function news() {
@@ -651,7 +670,40 @@ function news() {
 }
 news()
 
+var clickAmount = 0;
+$('.left-arrow').click(function() {
+	clickAmount--
+	clicked() 
+	console.log(clickAmount)
+	$('.slider').animate({
+		left: '+=100%',
+	})
+})
 
+$('.right-arrow').click(function() {
+	clickAmount++
+	clicked() 
+	console.log(clickAmount)
+	$('.slider').animate({
+		left: '-=100%',
+	})
+})
+
+function clicked() {
+	if (clickAmount == 0) {
+		$('.left-arrow').hide();
+		$('.right-arrow').show();
+	}
+	else if(clickAmount == 3) {
+		$('.right-arrow').hide();
+		$('.left-arrow').show();
+	}
+	else if(clickAmount > 0) {
+		$('.left-arrow').show();
+	}
+	
+}
+clicked();
 /*
 function work3(lat, lng) {
 	$.ajax({
