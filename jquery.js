@@ -132,8 +132,32 @@ setInterval(function shootingStar() {
 	$('.bottom-left').append(shootingStar);
 }, 6000);
 
+
+// State based off lon/lat current location
+
+
+function currentWeather(zip) {
+	var state;
+	$.ajax({
+		url: 'http://api.openweathermap.org/data/2.5/weather?zip='+zip+',us&appid=e0f0a8b3330dc42aff1f0ae66cbbf91d', 
+		async: true,
+		success: function apiCall(data){
+			$.ajax({
+				url: 'http://maps.googleapis.com/maps/api/geocode/json?&address='+zip+'', 
+				async: false,
+				success: function apiCall(data){
+					state = data.results[0].address_components[3].short_name;
+					console.log(data)
+				}
+			});
+			currentweatherLoop(data, state)
+		}
+	});
+}
+
 //Loop for current weather
-function currentweatherLoop(data) {
+function currentweatherLoop(data, state2) {
+	var state = state2;
 	var dayMain 	= data.main;		
 	var temp 		= dayMain.temp;
 	var tempMax 	= dayMain.temp_max;
@@ -227,7 +251,7 @@ function currentweatherLoop(data) {
 		
 	}
 
-	$('.weather-container').append('<div class="city-country child">'+city+', '+country+'</div>\
+	$('.weather-container').append('<div class="city-country child">'+city+', '+state+'</div>\
 									<div class="time child"></div>\
 									<div class="day-month child">'+daysNumb+' '+month+'</div>\
 									<div class="days child">'+result2+'</div>\
@@ -520,16 +544,7 @@ function hourLocation(lat, lon) {
 }
 
 //Weather for today
-function currentWeather(zip) {
-	$.ajax({
-		url: 'http://api.openweathermap.org/data/2.5/weather?zip='+zip+',us&appid=e0f0a8b3330dc42aff1f0ae66cbbf91d', 
-		async: true,
-		success: function apiCall(data){
-			currentweatherLoop(data)
-			
-		}
-	});
-}
+
 
 
 //Weather every 3 hours Click
@@ -704,6 +719,9 @@ function clicked() {
 	
 }
 clicked();
+
+
+
 /*
 function work3(lat, lng) {
 	$.ajax({
