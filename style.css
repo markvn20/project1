@@ -41,7 +41,7 @@ html, body {
 .day-box {
 	transition: all .1s ease-in-out;
 	position: relative;
-	height: 16.67777%;
+	
 	background: #222;
 }
 
@@ -161,6 +161,7 @@ html, body {
 	font-size: 24px;
 	float: left;
 	border: none;
+    color: white;
 }
 
 input[type=text]:focus {
@@ -626,6 +627,13 @@ input[type=text]:focus {
 	background: #111;
 }
 
+.slider-container {
+	height: 85%;
+	width: 90%;
+	overflow: hidden;
+	margin: 0 auto;
+}
+
 .slider {
 	height: 100%;
 	min-width: 0;
@@ -636,7 +644,10 @@ input[type=text]:focus {
 	background-repeat:no-repeat;
 	background-size: 100% auto;
 	background-position:center;
+	left: 0;
 }
+
+
 
 .left-arrow, .right-arrow {
 	position: absolute;
@@ -667,7 +678,8 @@ input[type=text]:focus {
 	height: 90%;
 	width: 19%;
 	margin-right: 1%;
-	box-shadow: 2px 2px 6px 1px rgb(26, 25, 25)
+	box-shadow: 2px 2px 6px 1px rgb(26, 25, 25);
+	z-index: 2;
 }
 
 .active-box {
@@ -710,18 +722,19 @@ input[type=text]:focus {
 	left: 7%;
 	bottom: 5%;
 	width: 86%;
+	font-size: .9em;
+	color: #888;
+	font-weight: bold;
 }
 
 .author {
 	float: left;
-	width: 50%;
-	color: #333;
+	width: 60%;
 }
 
 .publish-date {
 	float: left;
-	width: 50%;
-	color: #333;
+	width: 40%;
 	text-align: right;
 }
 

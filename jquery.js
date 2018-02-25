@@ -65,10 +65,18 @@ var days = [];
 //Weather baseed off location
 function weatherLocation(lat, lon) {
 	$.ajax({
-		url: 'http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&appid=e0f0a8b3330dc42aff1f0ae66cbbf91d', 
+		url: 'https://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&appid=e0f0a8b3330dc42aff1f0ae66cbbf91d', 
 		async: true,
 		success: function apiCall(data){
-			currentweatherLoop(data)
+			$.ajax({
+				url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng='+lat+','+lon+'&key=AIzaSyDrXxFRlRpdXrAmWUdxvhgqbGm0wzwgw9o', 
+				async: false,
+				success: function apiCall(data){
+					state = data.results[0].address_components[3].short_name;
+					console.log(state)
+				}
+			});
+			currentweatherLoop(data, state )
 		}
 	});
 }
@@ -139,11 +147,11 @@ setInterval(function shootingStar() {
 function currentWeather(zip) {
 	var state;
 	$.ajax({
-		url: 'http://api.openweathermap.org/data/2.5/weather?zip='+zip+',us&appid=e0f0a8b3330dc42aff1f0ae66cbbf91d', 
+		url: 'https://api.openweathermap.org/data/2.5/weather?zip='+zip+',us&appid=e0f0a8b3330dc42aff1f0ae66cbbf91d', 
 		async: true,
 		success: function apiCall(data){
 			$.ajax({
-				url: 'http://maps.googleapis.com/maps/api/geocode/json?&address='+zip+'', 
+				url: 'https://maps.googleapis.com/maps/api/geocode/json?&address='+zip+'', 
 				async: false,
 				success: function apiCall(data){
 					state = data.results[0].address_components[3].short_name;
@@ -184,9 +192,9 @@ function currentweatherLoop(data, state2) {
 	var tempConvert = Math.round(temp * 1.8 - 459.67);
 	var maxConvert 	= Math.round(tempMax * 1.8 - 459.67);
 	var minConvert 	= Math.round(tempMin * 1.8 - 459.67);
-	var tempDegrees = Math.round(temp * 1.8 - 459.67) + '°';
-	var maxDegrees 	= Math.round(tempMax * 1.8 - 459.67) + '°';
-	var minDegrees = Math.round(tempMin * 1.8 - 459.67) + '°';
+	var tempDegrees = Math.round(temp * 1.8 - 459.67) + 'Â°';
+	var maxDegrees 	= Math.round(tempMax * 1.8 - 459.67) + 'Â°';
+	var minDegrees = Math.round(tempMin * 1.8 - 459.67) + 'Â°';
 
 	//Convert Timestamp
 	var date = new Date(txt*1000);
@@ -291,124 +299,125 @@ function currentweatherLoop(data, state2) {
 	}
 	
 }
+
 var array = [];
 var counts = {};
 var please = [];
 function forLoop(list, dayResult) {
-		for(var i = 0; i < list.length; i++) {
-			var hourList 	= list[i].main;
-			var temp 		= hourList.temp;
-			var tempMax 	= hourList.temp_max;
-			var tempMin 	= hourList.temp_min;
-			var humidity 	= hourList.humidity;
-			var txt 		= list[i].dt_txt;
+	for(var i = 0; i < list.length; i++) {
+		var hourList 	= list[i].main;
+		var temp 		= hourList.temp;
+		var tempMax 	= hourList.temp_max;
+		var tempMin 	= hourList.temp_min;
+		var humidity 	= hourList.humidity;
+		var txt 		= list[i].dt_txt;
 
-			//Type of weather
-			var weatherType = list[i].weather[0].main;
-			var weatherType2 = list[i].weather[0].main;
-			
-			//Wind Speed
-			var windSpeed = list[i].wind.speed;
-			
-			//Wind Speed Convert m/s to m/h
-			var windConvert = (windSpeed * 3600 * 3.2808)/5280;
-			
-			//Kevlin to Fahrenheit
-			var tempConvert = Math.round(temp* 1.8 - 459.67);
-			var tempPercent = (tempConvert/100) * 100;
-			var tempDegrees = Math.round(temp * 1.8 - 459.67) + '°';
-			var maxConvert 	= Math.round(tempMax * 1.8 - 459.67);
-			var minConvert 	= Math.round(tempMin * 1.8 - 459.67);
+		//Type of weather
+		var weatherType = list[i].weather[0].main;
+		var weatherType2 = list[i].weather[0].main;
+		
+		//Wind Speed
+		var windSpeed = list[i].wind.speed;
+		
+		//Wind Speed Convert m/s to m/h
+		var windConvert = (windSpeed * 3600 * 3.2808)/5280;
+		
+		//Kevlin to Fahrenheit
+		var tempConvert = Math.round(temp* 1.8 - 459.67);
+		var tempPercent = (tempConvert/100) * 100;
+		var tempDegrees = Math.round(temp * 1.8 - 459.67) + '°';
+		var maxConvert 	= Math.round(tempMax * 1.8 - 459.67);
+		var minConvert 	= Math.round(tempMin * 1.8 - 459.67);
 
-			var timeSplit3 = '';
-			var splitDay = txt.slice(8, 10);
-			days.push(splitDay);
-			var timeSplit = txt.split(' ');
-			var timeSplit2 = timeSplit[1].slice(0,2);
-			
-			if(timeSplit2 == 12) {
-				timeSplit3 = 12 + 'PM'
-			}
-			else if(timeSplit2 > 12) {
-				timeSplit3 = (timeSplit2 - 12) + 'PM';
-			}
-			else if (timeSplit2 > 0 && timeSplit2 < 12) {
-				timeSplit3 = timeSplit2.slice(1,2) +'AM';
-			}
-			else if(timeSplit2 = '00') {
-				timeSplit3 = '12' + 'AM'
-			}
-
-			var currentIcon2 = '';
-			if(weatherType = 'Clear' && (timeSplit2 == '00' || timeSplit2 == '03' || timeSplit2 == '21')) {
-				currentIcon2 = '<img src="weather-hour-icon/moon.png">';
-			}
-			else {
-				currentIcon2 = '<img src="weather-hour-icon/'+weatherType2+'.png">';
-			}
-			var weatherIcon = '<div class="weatherIcon" style="background-image: url(weather-hour-icon/'+weatherType+'.png);"></div>';
-			var currentIcon = '<img src="weather-hour-icon/'+weatherType+'.png">'
-			var leftPercent = 0;
-			$('.temp-container').append('<div class="temp-hour">\
-											<span class="span-container">\
-												<span class="span-top">\
-													<h2 class="time-3hour">'+timeSplit3+'</h2>\
-												</span>\
-												<span class="span-bottom">\
-													<div class="temp-icon">\
-														<h2 class="temp-3hour">'+tempConvert+'</h2>\
-														'+currentIcon2+'\
-													</div>\
-													<span class="temp-height" height='+tempPercent+' style="background: #2c97c2"></span>\
-												</span>\
-											</span>\
-										</div>');
-								
-			var result = list.filter(function(e) {
-				return e.weather[0].main; 
-			});
-			var z = result[i].weather[0].main;
-			var x = Math.max(z);
-			array.push(z)
-			
-			$('.temp-height').each(function() {
-				var height = $(this).attr('height');
-				$(this).animate({
-			        height: height + '%'
-			    }, 1500).clearQueue();
-			});	
-			
+		var timeSplit3 = '';
+		var splitDay = txt.slice(8, 10);
+		days.push(splitDay);
+		var timeSplit = txt.split(' ');
+		var timeSplit2 = timeSplit[1].slice(0,2);
+		
+		if(timeSplit2 == 12) {
+			timeSplit3 = 12 + 'PM'
 		}
-		
-		array.forEach(function(x) {
-			counts[x] = (counts[x] || 0) + 1;
+		else if(timeSplit2 > 12) {
+			timeSplit3 = (timeSplit2 - 12) + 'PM';
+		}
+		else if (timeSplit2 > 0 && timeSplit2 < 12) {
+			timeSplit3 = timeSplit2.slice(1,2) +'AM';
+		}
+		else if(timeSplit2 = '00') {
+			timeSplit3 = '12' + 'AM'
+		}
+
+		var currentIcon2 = '';
+		if(weatherType = 'Clear' && (timeSplit2 == '00' || timeSplit2 == '03' || timeSplit2 == '21')) {
+			currentIcon2 = '<img src="weather-hour-icon/moon.png">';
+		}
+		else {
+			currentIcon2 = '<img src="weather-hour-icon/'+weatherType2+'.png">';
+		}
+		var weatherIcon = '<div class="weatherIcon" style="background-image: url(weather-hour-icon/'+weatherType+'.png);"></div>';
+		var currentIcon = '<img src="weather-hour-icon/'+weatherType+'.png">'
+		var leftPercent = 0;
+		$('.temp-container').append('<div class="temp-hour">\
+										<span class="span-container">\
+											<span class="span-top">\
+												<h2 class="time-3hour">'+timeSplit3+'</h2>\
+											</span>\
+											<span class="span-bottom">\
+												<div class="temp-icon">\
+													<h2 class="temp-3hour">'+tempConvert+'</h2>\
+													'+currentIcon2+'\
+												</div>\
+												<span class="temp-height" height='+tempPercent+' style="background: #2c97c2"></span>\
+											</span>\
+										</span>\
+									</div>');
+							
+		var result = list.filter(function(e) {
+			return e.weather[0].main; 
 		});
+		var z = result[i].weather[0].main;
+		var x = Math.max(z);
+		array.push(z)
 		
-		var highestValue = 0;
-		var highestKey;
-		for (var key in counts) {
-		  if (counts[key] > highestValue) {
+		$('.temp-height').each(function() {
+			var height = $(this).attr('height');
+			$(this).animate({
+		        height: height + '%'
+		    }, 1500).clearQueue();
+		});	
+		
+	}
+	
+	array.forEach(function(x) {
+		counts[x] = (counts[x] || 0) + 1;
+	});
+	
+	var highestValue = 0;
+	var highestKey;
+	for (var key in counts) {
+		if (counts[key] > highestValue) {
 			highestValue = counts[key];
 			highestKey = key;
-		  }
-		} 
+		}
+	} 
 
-		//Click show today/other days
-		$('.bottom-right-top').html('<div class="bottom-right-top-left">\
-										<h2>'+dayResult+'<h2>\
-									</div>\
-									<div class="bottom-right-top-right">Today is mainly '+highestKey+'</div>\
-								');
+	//Click show today/other days
+	$('.bottom-right-top').html('<div class="bottom-right-top-left">\
+									<h2>'+dayResult+'<h2>\
+								</div>\
+								<div class="bottom-right-top-right">Today is mainly '+highestKey+'</div>\
+							');
 
-		$('.temp-hour').each(function(index) {
-			var tempAmount = $('.temp-hour').length;
-			var tempWidth = 100 / tempAmount;
+	$('.temp-hour').each(function(index) {
+		var tempAmount = $('.temp-hour').length;
+		var tempWidth = 100 / tempAmount;
+		$(this).css('width', tempWidth + '%');
+		if(tempAmount = 1) {
 			$(this).css('width', tempWidth + '%');
-			if(tempAmount = 1) {
-				$(this).css('width', tempWidth + '%');
-			}
-		});
-	}	
+		}
+	});
+}	
 
 function forLoop2(data) {
 	for(var i = 0; i < data.list.length; i++) {
@@ -504,6 +513,15 @@ function hourLocation(lat, lon) {
 				$('.nav-bottom').append('<div class="day-box" partialDay='+uniqueDays2[i]+' day='+uniqueDays[i]+'><h3>'+uniqueDays2[i]+'</h3></div>')
 				$('.day-box:first-child').addClass('active-day');
 			}
+			$('.day-box').each(function(index) {
+				var boxAmount = $('.day-box').length;
+				var boxHeight = 100 / boxAmount;
+				$(this).css('height', boxHeight + '%');
+				if(tempAmount = 1) {
+					$(this).css('height', boxHeight + '%');
+				}
+			});
+
 			if($('.day-box').hasClass('active-day')) {
 				$('.bottom-right-top').html('today')
 			}
@@ -587,6 +605,14 @@ function getData(zip) {
 				$('.nav-bottom').append('<div class="day-box" partialDay='+uniqueDays2[i]+' day='+uniqueDays[i]+'><h3>'+uniqueDays2[i]+'</h3></div>')
 				$('.day-box:first-child').addClass('active-day');
 			}
+			$('.day-box').each(function(index) {
+				var boxAmount = $('.day-box').length;
+				var boxHeight = 100 / boxAmount;
+				$(this).css('height', boxHeight + '%');
+				if(tempAmount = 1) {
+					$(this).css('height', boxHeight + '%');
+				}
+			});
 			if($('.day-box').hasClass('active-day')) {
 				$('.bottom-right-top').html('today')
 			}
@@ -658,17 +684,28 @@ function newsLoop(data) {
 		var newsLink 		= allNews.url;
 		var newsImage 		= allNews.urlToImage;
 		var publishDate		= allNews.publishedAt;
+		var publishDate2	= publishDate.split('T')[0];
+		var publishSplit	= publishDate.split('T')[1];
+		var publishTime 	= publishSplit.substring(0, publishSplit.length - 1);
+		var publishHour 	= publishTime.split(':')[0] - 12;
 		
+		if(publishHour < 0) {
+			publishHour = publishDate2;
+		}
+		else {
+			publishHour = publishHour + ' hours ago';
+		}
+
 		//News Box
 		$('.slider').append('<div class="news-box")>\
 								<a target="_tab" class="open-link" href="'+newsLink+'"></a>\
-								<div class="box-top" style="background-image: url('+newsImage+');">33</div>\
+								<div class="box-top" style="background-image: url('+newsImage+');"></div>\
 								<div class="box-bottom">\
 									<div class="box-padding">\
 										<div class="title"><h2>'+newsTitle+'</h2></div>\
 										<div class="box-bottom2">\
 											<div class="author">by ' +authorSplit+'</div>\
-											<div class="publish-date">'+publishDate+'</div>\
+											<div class="publish-date">'+publishHour+'</div>\
 										</div>\
 									</div>\
 								</div>\
@@ -679,46 +716,44 @@ function newsLoop(data) {
 }
 
 function news() {
-	$.get("https://newsapi.org/v2/everything?domains=space.com&apiKey=654fa60020c846d5ae35f071c45b484c").done(function (data) {
-     	newsLoop(data)
+	$.ajax({
+		url: 'https://newsapi.org/v2/everything?domains=space.com&apiKey=654fa60020c846d5ae35f071c45b484c', 
+		async: true,
+		success: function apiCall(data){
+			newsLoop(data)
+		}
 	});
 }
 news()
-
-var clickAmount = 0;
-$('.left-arrow').click(function() {
-	clickAmount--
-	clicked() 
-	console.log(clickAmount)
-	$('.slider').animate({
-		left: '+=100%',
-	})
+var b = 0;
+$('.left-arrow').mouseover(function() {
+	b+= 300;
+	$('.slider').animate({'left': b + '%'}, 5000, "linear")
 })
+$('.left-arrow').mouseout(function(event ){
+	b = 0;
+	var z = $('.slider').css('left');
+    $('.slider').css({'left': z}).stop(true);
 
-$('.right-arrow').click(function() {
-	clickAmount++
-	clicked() 
-	console.log(clickAmount)
-	$('.slider').animate({
-		left: '-=100%',
-	})
+});
+
+$('.right-arrow').mouseover(function() {
+	b+= 300;
+	$('.slider').animate({'left': -b + '%'}, 5000, "linear")
 })
+$('.right-arrow').mouseout(function(event ){
+	b = 0;
+	var z = $('.slider').css('left');
+    $('.slider').css({'left': z}).stop(true);
 
-function clicked() {
-	if (clickAmount == 0) {
-		$('.left-arrow').hide();
-		$('.right-arrow').show();
-	}
-	else if(clickAmount == 3) {
-		$('.right-arrow').hide();
-		$('.left-arrow').show();
-	}
-	else if(clickAmount > 0) {
-		$('.left-arrow').show();
-	}
-	
+});
+
+var sliderPosiition = $('.slider').css('left');
+
+if (sliderPosiition = 0) {
+	test.hide();
 }
-clicked();
+
 
 
 
@@ -805,6 +840,13 @@ function getData(zip, url) {
 				
 	});
 }
+*/
+
+/*omar
+family business - technology 
+
++92.3332227760
+omar.bayat@anzatrade.com
 */
 
 });
